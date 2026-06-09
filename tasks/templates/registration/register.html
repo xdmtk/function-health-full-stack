@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Register | Task Manager{% endblock %}
+
+{% block content %}
+<h1>Create an account</h1>
+<form method="post" class="card" novalidate>
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    {% for field in form %}
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field.errors }}
+        {{ field }}
+        {% if field.help_text %}<p class="muted">{{ field.help_text }}</p>{% endif %}
+    {% endfor %}
+    <div class="actions">
+        <button type="submit">Register</button>
+        <a href="{% url 'login' %}">Already have an account?</a>
+    </div>
+</form>
+{% endblock %}

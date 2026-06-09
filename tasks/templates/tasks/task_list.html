@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}My tasks | Task Manager{% endblock %}
+
+{% block content %}
+<div class="actions">
+    <h1 style="margin-right: auto;">My tasks</h1>
+    <a class="button" href="{% url 'task_create' %}">New task</a>
+</div>
+
+{% if tasks %}
+    {% for task in tasks %}
+        <article class="card">
+            <h2>{{ task.title }}</h2>
+            {% if task.description %}<p>{{ task.description|linebreaksbr }}</p>{% endif %}
+            {% if task.due_date %}<p><strong>Due:</strong> {{ task.due_date }}</p>{% endif %}
+            <p class="status">{% if task.is_complete %}Complete{% else %}Incomplete{% endif %}</p>
+            <div class="actions">
+                <form method="post" action="{% url 'task_toggle' task.pk %}">
+                    {% csrf_token %}
+                    <button type="submit" class="secondary">
+                        Mark {% if task.is_complete %}incomplete{% else %}complete{% endif %}
+                    </button>
+                </form>
+                <a class="button secondary" href="{% url 'task_edit' task.pk %}">Edit</a>
+                <a class="button danger" href="{% url 'task_delete' task.pk %}">Delete</a>
+            </div>
+        </article>
+    {% endfor %}
+{% else %}
+    <p class="card">No tasks yet. Create your first task to get started.</p>
+{% endif %}
+{% endblock %}

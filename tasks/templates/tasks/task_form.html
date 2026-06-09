@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}{% if object %}Edit task{% else %}New task{% endif %} | Task Manager{% endblock %}
+
+{% block content %}
+<h1>{% if object %}Edit task{% else %}New task{% endif %}</h1>
+<form method="post" class="card" novalidate>
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <label for="{{ form.title.id_for_label }}">Title</label>
+    {{ form.title.errors }}
+    {{ form.title }}
+
+    <label for="{{ form.description.id_for_label }}">Description</label>
+    {{ form.description.errors }}
+    {{ form.description }}
+
+    <label for="{{ form.due_date.id_for_label }}">Due date</label>
+    {{ form.due_date.errors }}
+    {{ form.due_date }}
+
+    <label>
+        {{ form.is_complete }} Complete
+    </label>
+    {{ form.is_complete.errors }}
+
+    <div class="actions">
+        <button type="submit">Save task</button>
+        <a href="{% url 'task_list' %}">Cancel</a>
+    </div>
+</form>
+{% endblock %}
